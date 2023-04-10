@@ -1,0 +1,20 @@
+{
+    "name": "kurt/thanos-in-place",
+    "type": "project",
+    "require": {
+        "aternos/thanos": "^0.6.0",
+        "php": ">=8.1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kurt Thiemann",
+            "email": "kurt@aternos.org"
+        }
+    ]
+}
