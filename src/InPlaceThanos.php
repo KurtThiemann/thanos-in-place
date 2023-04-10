@@ -9,10 +9,26 @@ class InPlaceThanos extends \Aternos\Thanos\Thanos
         $removedChunks = 0;
         $output = tempnam(sys_get_temp_dir(), 'thanos');
 
+        $totalDir = count($world->getRegionDirectories());
+        $currentDir = 0;
         foreach ($world->getRegionDirectories() as $regionDirectory) {
             $forcedChunks = $this->getForceLoadedChunks($regionDirectory);
+            $totalRegionFiles = count($regionDirectory->getRegionFiles());
+            $currentRegionFile = 1;
+            $currentDir += 1;
             foreach ($regionDirectory->getRegionFiles() as $regionFile) {
                 $regionFile = $regionDirectory->getPath() . DIRECTORY_SEPARATOR . $regionFile;
+                if ($currentRegionFile % 10 == 0 || $currentRegionFile == $totalRegionFiles) {
+                    echo sprintf('[%d/%d][%d/%d] %s',
+                        $currentDir,
+                        $totalDir,
+                        $currentRegionFile,
+                        $totalRegionFiles,
+                        $regionFile
+                    );
+                    echo PHP_EOL;
+                }
+                $currentRegionFile += 1;
                 $region = new \Aternos\Thanos\Region\AnvilRegion($regionFile, $output);
                 foreach ($region->getChunks() as $chunk) {
                     if(in_array([$chunk->getGlobalXPos(), $chunk->getGlobalYPos()], $forcedChunks, true)) {
